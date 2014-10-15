@@ -1,6 +1,6 @@
 ## common_schema [![Build Status](https://travis-ci.org/Oefenweb/ansible-common-schema.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-common-schema)
 
-Set up common_schema (DBA's framework for MySQL).
+Set up [common_schema](https://code.google.com/p/common-schema/) (DBA's framework for MySQL).
 
 #### Requirements
 
