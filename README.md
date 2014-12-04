@@ -1,4 +1,6 @@
-## common_schema [![Build Status](https://travis-ci.org/Oefenweb/ansible-common-schema.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-common-schema)
+## common_schema
+
+[![Build Status](https://travis-ci.org/Oefenweb/ansible-common-schema.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-common-schema) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-common--schema-blue.svg)](https://galaxy.ansible.com/list#/roles/1954)
 
 Set up [common_schema](https://code.google.com/p/common-schema/) (DBA's framework for MySQL).
 
