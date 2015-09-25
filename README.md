@@ -22,7 +22,7 @@ None
 ---
 - hosts: all
   roles:
-  - common-schema
+    - common-schema
 ```
 
 #### License
