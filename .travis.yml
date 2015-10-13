@@ -6,6 +6,7 @@ services: mysql
 
 env:
   - ANSIBLE_VERSION=latest
+  - ANSIBLE_VERSION=1.9.4
   - ANSIBLE_VERSION=1.9.3
   - ANSIBLE_VERSION=1.9.2
   - ANSIBLE_VERSION=1.9.1
