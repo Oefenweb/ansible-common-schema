@@ -71,7 +71,7 @@ script:
 
   # Test database existence
   - >
-    mysql -e "SHOW DATABASES;"
+    mysql -uroot -e "SHOW DATABASES;"
     | grep common_schema -q
     && (echo 'Availability test: pass' && exit 0)
     || (echo 'Availability test: fail' && exit 1)
