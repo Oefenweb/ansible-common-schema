@@ -7,26 +7,38 @@
     owner: root
     group: root
     mode: 0755
-  tags: [configuration, common-schema, common-schema-download ]
+  tags:
+    - configuration
+    - common-schema
+    - common-schema-download
 
 - name: download
   get_url:
-    url: "https://common-schema.googlecode.com/files/common_schema-{{ common_schema_version }}.sql"
+    url: "https://github.com/shlomi-noach/common_schema/releases/download/v{{ common_schema_version }}/common_schema-{{ common_schema_version }}.sql"
     dest: "/var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql"
     owner: root
     group: root
     mode: 0644
-  tags: [configuration, common-schema, common-schema-download]
+  tags:
+    - configuration
+    - common-schema
+    - common-schema-download
 
 - name: remove
-  shell: "mysql -e \"DROP DATABASE IF EXISTS common_schema;\""
+  shell: mysql -e 'DROP DATABASE IF EXISTS common_schema;'
   when: ansible_local is not defined or ansible_local.common_schema is not defined or ansible_local.common_schema.version is not defined or ansible_local.common_schema.version is defined and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
-  tags: [configuration, common-schema, common-schema-install]
+  tags:
+    - configuration
+    - common-schema
+    - common-schema-install
 
 - name: install
-  shell: "mysql < /var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql"
+  shell: mysql < /var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql
   when: ansible_local is not defined or ansible_local.common_schema is not defined or ansible_local.common_schema.version is not defined or ansible_local.common_schema.version is defined and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
-  tags: [configuration, common-schema, common-schema-install]
+  tags:
+    - configuration
+    - common-schema
+    - common-schema-install
 
 - name: create (local facts) directory
   file:
@@ -35,7 +47,10 @@
     owner: root
     group: root
     mode: 0755
-  tags: [configuration, common-schema, common-schema-facts]
+  tags:
+    - configuration
+    - common-schema
+    - common-schema-facts
 
 - name: set local facts
   template:
@@ -44,4 +59,7 @@
     owner: root
     group: root
     mode: 0644
-  tags: [configuration, common-schema, common-schema-facts]
+  tags:
+    - configuration
+    - common-schema
+    - common-schema-facts
