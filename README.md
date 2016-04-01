@@ -10,7 +10,7 @@ Set up [common_schema](https://code.google.com/p/common-schema/) (DBA's framewor
 
 #### Variables
 
-* `common_schema_version` [default: `2.2`]: Version to install
+* `common_schema_version` [default: `2.3`]: Version to install
 
 ## Dependencies
 

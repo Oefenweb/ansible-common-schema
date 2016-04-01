@@ -11,7 +11,7 @@
 
 - name: download
   get_url:
-    url: "https://common-schema.googlecode.com/files/common_schema-{{ common_schema_version }}.sql"
+    url: "https://github.com/shlomi-noach/common_schema/releases/download/v{{ common_schema_version }}/common_schema-{{ common_schema_version }}.sql"
     dest: "/var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql"
     owner: root
     group: root
