@@ -26,7 +26,12 @@
 
 - name: remove
   shell: mysql -e 'DROP DATABASE IF EXISTS common_schema;'
-  when: ansible_local is not defined or ansible_local.common_schema is not defined or ansible_local.common_schema.version is not defined or ansible_local.common_schema.version is defined and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
+  when: >
+    ansible_local is not defined
+    or ansible_local.common_schema is not defined
+    or ansible_local.common_schema.version is not defined
+    or ansible_local.common_schema.version is defined
+    and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
   tags:
     - configuration
     - common-schema
@@ -34,7 +39,12 @@
 
 - name: install
   shell: mysql < /var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql
-  when: ansible_local is not defined or ansible_local.common_schema is not defined or ansible_local.common_schema.version is not defined or ansible_local.common_schema.version is defined and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
+  when: >
+    ansible_local is not defined
+    or ansible_local.common_schema is not defined
+    or ansible_local.common_schema.version is not defined
+    or ansible_local.common_schema.version is defined
+    and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
   tags:
     - configuration
     - common-schema
