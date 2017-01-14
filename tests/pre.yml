@@ -1,0 +1,15 @@
+# pre test file for insecure-platform-warning
+---
+- name: pre | fix thread_stack
+  ini_file:
+    dest: /etc/mysql/my.cnf
+    section: mysqld
+    option: thread_stack
+    value: 256K
+  register: _fix_thread_stack
+
+- name: pre | restart mysql
+  service:
+    name: mysql
+    state: restarted
+  when: _fix_thread_stack | changed
