@@ -5,6 +5,9 @@ dist: trusty
 language: python
 python: "2.7"
 
+services:
+  - mysql
+
 env:
   - ANSIBLE_VERSION=latest
   - ANSIBLE_VERSION=2.2.0.0
@@ -50,9 +53,6 @@ branches:
 
 before_install:
   - sudo apt-get update -qq
-
-  # Install and configure dependencies
-  - sudo apt-get install --yes mysql-server
 
 install:
   # Install Ansible.
