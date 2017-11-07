@@ -1,4 +1,4 @@
-# pre test file for insecure-platform-warning
+# pre test file for common-schema
 ---
 - name: pre | fix thread_stack
   ini_file:
