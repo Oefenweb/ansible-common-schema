@@ -1,75 +1,81 @@
 # tasks file for common_schema
 ---
-- name: create (download) directory
-  file:
-    path: /var/lib/ansible/common-schema/downloads
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
+- name: get mysql version
+  command: >
+    mysql -e 'SELECT VERSION();' -BN
+  register: _mysql_version
+  changed_when: false
   tags:
     - configuration
     - common-schema
-    - common-schema-download
+    - common-schema-mysql-version-get
 
-- name: download
-  get_url:
-    url: "https://github.com/shlomi-noach/common_schema/releases/download/v{{ common_schema_version }}/common_schema-{{ common_schema_version }}.sql"
-    dest: "/var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql"
-    owner: root
-    group: root
-    mode: 0644
-  tags:
-    - configuration
-    - common-schema
-    - common-schema-download
+- block:
 
-- name: remove
-  shell: mysql -e 'DROP DATABASE IF EXISTS common_schema;'
-  when: >
-    ansible_local is not defined
-    or ansible_local.common_schema is not defined
-    or ansible_local.common_schema.version is not defined
-    or ansible_local.common_schema.version is defined
-    and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
-  tags:
-    - configuration
-    - common-schema
-    - common-schema-install
+  - name: create (download) directory
+    file:
+      path: /var/lib/ansible/common-schema/downloads
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
+    tags:
+      - common-schema-download
 
-- name: install
-  shell: mysql < /var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql
-  when: >
-    ansible_local is not defined
-    or ansible_local.common_schema is not defined
-    or ansible_local.common_schema.version is not defined
-    or ansible_local.common_schema.version is defined
-    and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
-  tags:
-    - configuration
-    - common-schema
-    - common-schema-install
+  - name: download
+    get_url:
+      url: "https://github.com/shlomi-noach/common_schema/releases/download/v{{ common_schema_version }}/common_schema-{{ common_schema_version }}.sql"
+      dest: "/var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql"
+      owner: root
+      group: root
+      mode: 0644
+    tags:
+      - common-schema-download
 
-- name: create (local facts) directory
-  file:
-    path: /etc/ansible/facts.d/
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  tags:
-    - configuration
-    - common-schema
-    - common-schema-facts
+  - name: remove
+    shell: mysql -e 'DROP DATABASE IF EXISTS common_schema;'
+    when: >
+      ansible_local is not defined
+      or ansible_local.common_schema is not defined
+      or ansible_local.common_schema.version is not defined
+      or ansible_local.common_schema.version is defined
+      and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
+    tags:
+      - common-schema-install
 
-- name: set local facts
-  template:
-    src: etc/ansible/facts.d/common_schema.fact.j2
-    dest: /etc/ansible/facts.d/common_schema.fact
-    owner: root
-    group: root
-    mode: 0644
+  - name: install
+    shell: mysql < /var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql
+    when: >
+      ansible_local is not defined
+      or ansible_local.common_schema is not defined
+      or ansible_local.common_schema.version is not defined
+      or ansible_local.common_schema.version is defined
+      and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
+    tags:
+      - common-schema-install
+
+  - name: create (local facts) directory
+    file:
+      path: /etc/ansible/facts.d/
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
+    tags:
+      - common-schema-facts
+
+  - name: set local facts
+    template:
+      src: etc/ansible/facts.d/common_schema.fact.j2
+      dest: /etc/ansible/facts.d/common_schema.fact
+      owner: root
+      group: root
+      mode: 0644
+    tags:
+      - common-schema-facts
+
+  when: _mysql_version.stdout | version_compare('5.7', '<')
   tags:
     - configuration
     - common-schema
-    - common-schema-facts
+    - common-schema-mysql-version-check
