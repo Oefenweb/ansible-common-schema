@@ -12,4 +12,4 @@
   service:
     name: mysql
     state: restarted
-  when: _fix_thread_stack | changed
+  when: _fix_thread_stack is changed

@@ -39,7 +39,7 @@
       or ansible_local.common_schema is not defined
       or ansible_local.common_schema.version is not defined
       or ansible_local.common_schema.version is defined
-      and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
+      and ansible_local.common_schema.version is version(common_schema_version, '!=')
     tags:
       - common-schema-install
 
@@ -50,7 +50,7 @@
       or ansible_local.common_schema is not defined
       or ansible_local.common_schema.version is not defined
       or ansible_local.common_schema.version is defined
-      and ansible_local.common_schema.version | version_compare(common_schema_version, '!=')
+      and ansible_local.common_schema.version is version(common_schema_version, '!=')
     tags:
       - common-schema-install
 
@@ -74,7 +74,7 @@
     tags:
       - common-schema-facts
 
-  when: _mysql_version.stdout | version_compare('5.7', '<')
+  when: _mysql_version.stdout is version('5.7', '<')
   tags:
     - configuration
     - common-schema
