@@ -1,6 +1,7 @@
-# meta file for common_schema
+# meta file for common-schema
 ---
 galaxy_info:
+  role_name: common-schema
   author: Mischa ter Smitten
   company: Oefenweb.nl B.V.
   description: Set up common_schema (DBA's framework for MySQL)
