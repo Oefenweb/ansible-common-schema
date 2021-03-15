@@ -1,4 +1,4 @@
-# tasks file for common-schema
+# tasks file
 ---
 - name: get mysql version
   command: >

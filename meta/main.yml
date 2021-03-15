@@ -1,6 +1,7 @@
-# meta file for common-schema
+# meta file
 ---
 galaxy_info:
+  namespace: oefenweb
   role_name: common-schema
   author: Mischa ter Smitten
   company: Oefenweb.nl B.V.

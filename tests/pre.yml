@@ -1,4 +1,4 @@
-# pre test file for common-schema
+# pre test file
 ---
 - name: pre | fix thread_stack
   ini_file:
