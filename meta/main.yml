@@ -2,7 +2,7 @@
 ---
 galaxy_info:
   namespace: oefenweb
-  role_name: common-schema
+  role_name: common_schema
   author: Mischa ter Smitten
   company: Oefenweb.nl B.V.
   description: Set up common_schema (DBA's framework for MySQL)
