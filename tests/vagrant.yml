@@ -4,6 +4,11 @@
   remote_user: vagrant
   become: true
   pre_tasks:
-    - include: pre.yml
+    - name: include vars
+      include_vars: "{{ playbook_dir }}/vars/main.yml"
+    - name: include tasks
+      include: "{{ playbook_dir }}/tasks/pre.yml"
   roles:
     - ../../
+  handlers:
+    - import_tasks: "{{ playbook_dir }}/handlers/main.yml"

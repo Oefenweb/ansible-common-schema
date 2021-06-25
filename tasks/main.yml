@@ -12,69 +12,69 @@
 
 - block:
 
-  - name: create (download) directory
-    file:
-      path: /var/lib/ansible/common-schema/downloads
-      state: directory
-      owner: root
-      group: root
-      mode: 0755
-    tags:
-      - common-schema-download
+    - name: create (download) directory
+      file:
+        path: /var/lib/ansible/common-schema/downloads
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      tags:
+        - common-schema-download
 
-  - name: download
-    get_url:
-      url: "https://github.com/shlomi-noach/common_schema/releases/download/v{{ common_schema_version }}/common_schema-{{ common_schema_version }}.sql"
-      dest: "/var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql"
-      owner: root
-      group: root
-      mode: 0644
-    tags:
-      - common-schema-download
+    - name: download
+      get_url:
+        url: "https://github.com/shlomi-noach/common_schema/releases/download/v{{ common_schema_version }}/common_schema-{{ common_schema_version }}.sql"
+        dest: "/var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql"
+        owner: root
+        group: root
+        mode: 0644
+      tags:
+        - common-schema-download
 
-  - name: remove
-    shell: >
-      mysql -e 'DROP DATABASE IF EXISTS common_schema;'
-    when: >
-      ansible_local is not defined
-      or ansible_local.common_schema is not defined
-      or ansible_local.common_schema.version is not defined
-      or ansible_local.common_schema.version is defined
-      and ansible_local.common_schema.version is version(common_schema_version, '!=')
-    tags:
-      - common-schema-install
+    - name: remove
+      shell: >
+        mysql -e 'DROP DATABASE IF EXISTS common_schema;'
+      when: >
+        ansible_local is not defined
+        or ansible_local.common_schema is not defined
+        or ansible_local.common_schema.version is not defined
+        or ansible_local.common_schema.version is defined
+        and ansible_local.common_schema.version is version(common_schema_version, '!=')
+      tags:
+        - common-schema-install
 
-  - name: install
-    shell: >
-      mysql < /var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql
-    when: >
-      ansible_local is not defined
-      or ansible_local.common_schema is not defined
-      or ansible_local.common_schema.version is not defined
-      or ansible_local.common_schema.version is defined
-      and ansible_local.common_schema.version is version(common_schema_version, '!=')
-    tags:
-      - common-schema-install
+    - name: install
+      shell: >
+        mysql < /var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql
+      when: >
+        ansible_local is not defined
+        or ansible_local.common_schema is not defined
+        or ansible_local.common_schema.version is not defined
+        or ansible_local.common_schema.version is defined
+        and ansible_local.common_schema.version is version(common_schema_version, '!=')
+      tags:
+        - common-schema-install
 
-  - name: create (local facts) directory
-    file:
-      path: /etc/ansible/facts.d/
-      state: directory
-      owner: root
-      group: root
-      mode: 0755
-    tags:
-      - common-schema-facts
+    - name: create (local facts) directory
+      file:
+        path: /etc/ansible/facts.d/
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      tags:
+        - common-schema-facts
 
-  - name: set local facts
-    template:
-      src: etc/ansible/facts.d/common_schema.fact.j2
-      dest: /etc/ansible/facts.d/common_schema.fact
-      owner: root
-      group: root
-      mode: 0644
-    tags:
-      - common-schema-facts
+    - name: set local facts
+      template:
+        src: etc/ansible/facts.d/common_schema.fact.j2
+        dest: /etc/ansible/facts.d/common_schema.fact
+        owner: root
+        group: root
+        mode: 0644
+      tags:
+        - common-schema-facts
 
   when: _mysql_version.stdout is version('5.7', '<')
   tags:
