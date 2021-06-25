@@ -1,5 +1,3 @@
 ---
 warn_list:
   - '106'
-  - no-handler
-  - risky-shell-pipe
