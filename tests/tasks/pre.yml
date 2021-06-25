@@ -12,6 +12,10 @@
   apt:
     deb: "https://repo.percona.com/apt/percona-release_latest.{{ ansible_distribution_release }}_all.deb"
 
+- name: percona server | add repo
+  apt:
+    update_cache: true
+
 - name: percona server | preseed
   debconf:
     name: "{{ item.name }}"
