@@ -21,11 +21,11 @@
   with_items:
     - name: "percona-server-server-5.7"
       question: "percona-server-server-5.7/root-pass"
-      value: "{{ cacti_server_percona_server_root_password }}"
+      value: "{{ common_schema_percona_server_root_password }}"
       vtype: password
     - name: "percona-server-server-5.7"
       question: "percona-server-server-5.7/re-root-pass"
-      value: "{{ cacti_server_percona_server_root_password }}"
+      value: "{{ common_schema_percona_server_root_password }}"
       vtype: password
   changed_when: false
 
@@ -60,7 +60,7 @@
       host = localhost
       port = 3306
       user = root
-      password = '{{ cacti_server_percona_server_root_password }}'
+      password = '{{ common_schema_percona_server_root_password }}'
     owner: root
     group: root
     mode: 0600
