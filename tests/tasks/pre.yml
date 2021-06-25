@@ -1,0 +1,66 @@
+# pre test file
+---
+- name: percona server | add repo | dependencies
+  apt:
+    name:
+      - software-properties-common
+      - dirmngr
+    update_cache: true
+    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
+
+- name: percona server | add repo
+  apt:
+    deb: "https://repo.percona.com/apt/percona-release_latest.{{ ansible_distribution_release }}_all.deb"
+
+- name: percona server | preseed
+  debconf:
+    name: "{{ item.name }}"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  with_items:
+    - name: "percona-server-server-5.7"
+      question: "percona-server-server-5.7/root-pass"
+      value: "{{ cacti_server_percona_server_root_password }}"
+      vtype: password
+    - name: "percona-server-server-5.7"
+      question: "percona-server-server-5.7/re-root-pass"
+      value: "{{ cacti_server_percona_server_root_password }}"
+      vtype: password
+  changed_when: false
+
+- name: percona server | install
+  apt:
+    name:
+      - percona-server-client-5.7
+      - percona-server-server-5.7
+      - libperconaserverclient20
+      - "python{{ ansible_python_version is version('3', '>=') | ternary('3', '') }}-mysqldb"
+    state: "{{ apt_install_state | default('latest') }}"
+
+- name: percona server | configure encoding
+  lineinfile:
+    path: /etc/mysql/percona-server.conf.d/mysqld.cnf
+    line: "{{ item }}"
+    insertafter: EOF
+  notify: restart mysql
+  with_items:
+    - thread_stack = 256K
+
+- name: percona server | start
+  service:
+    name: mysql
+    state: started
+
+- name: percona server | configure
+  copy:
+    dest: '~root/.my.cnf'
+    content: |
+      [client]
+      host = localhost
+      port = 3306
+      user = root
+      password = '{{ cacti_server_percona_server_root_password }}'
+    owner: root
+    group: root
+    mode: 0600
