@@ -1,7 +1,7 @@
 # pre test file
 ---
 - name: percona server | add repo | dependencies
-  apt:
+  ansible.builtin.apt:
     name:
       - software-properties-common
       - dirmngr
@@ -9,15 +9,15 @@
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
 
 - name: percona server | add repo
-  apt:
+  ansible.builtin.apt:
     deb: "https://repo.percona.com/apt/percona-release_latest.{{ ansible_distribution_release }}_all.deb"
 
 - name: percona server | add repo
-  apt:
+  ansible.builtin.apt:
     update_cache: true
 
 - name: percona server | preseed
-  debconf:
+  ansible.builtin.debconf:
     name: "{{ item.name }}"
     question: "{{ item.question }}"
     value: "{{ item.value }}"
@@ -34,7 +34,7 @@
   changed_when: false
 
 - name: percona server | install
-  apt:
+  ansible.builtin.apt:
     name:
       - percona-server-client-5.7
       - percona-server-server-5.7
@@ -43,7 +43,7 @@
     state: "{{ apt_install_state | default('latest') }}"
 
 - name: percona server | configure encoding
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/mysql/percona-server.conf.d/mysqld.cnf
     line: "{{ item }}"
     insertafter: EOF
@@ -52,12 +52,12 @@
     - thread_stack = 256K
 
 - name: percona server | start
-  service:
+  ansible.builtin.service:
     name: mysql
     state: started
 
 - name: percona server | configure
-  copy:
+  ansible.builtin.copy:
     dest: '~root/.my.cnf'
     content: |
       [client]
