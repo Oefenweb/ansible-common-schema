@@ -1,7 +1,7 @@
 # tasks file
 ---
 - name: get mysql version
-  command: >
+  ansible.builtin.command: >
     mysql -e 'SELECT VERSION();' -BN
   register: _mysql_version
   changed_when: false
@@ -10,10 +10,11 @@
     - common-schema
     - common-schema-mysql-version-get
 
-- block:
+- name: install
+  block:
 
     - name: create (download) directory
-      file:
+      ansible.builtin.file:
         path: /var/lib/ansible/common-schema/downloads
         state: directory
         owner: root
@@ -23,7 +24,7 @@
         - common-schema-download
 
     - name: download
-      get_url:
+      ansible.builtin.get_url:
         url: "https://github.com/shlomi-noach/common_schema/releases/download/v{{ common_schema_version }}/common_schema-{{ common_schema_version }}.sql"
         dest: "/var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql"
         owner: root
@@ -33,7 +34,7 @@
         - common-schema-download
 
     - name: remove
-      shell: >
+      ansible.builtin.shell: >
         mysql -e 'DROP DATABASE IF EXISTS common_schema;'
       when: >
         ansible_local is not defined
@@ -45,7 +46,7 @@
         - common-schema-install
 
     - name: install
-      shell: >
+      ansible.builtin.shell: >
         mysql < /var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql
       when: >
         ansible_local is not defined
@@ -57,7 +58,7 @@
         - common-schema-install
 
     - name: create (local facts) directory
-      file:
+      ansible.builtin.file:
         path: /etc/ansible/facts.d/
         state: directory
         owner: root
@@ -67,7 +68,7 @@
         - common-schema-facts
 
     - name: set local facts
-      template:
+      ansible.builtin.template:
         src: etc/ansible/facts.d/common_schema.fact.j2
         dest: /etc/ansible/facts.d/common_schema.fact
         owner: root
