@@ -23,7 +23,7 @@ None
 ---
 - hosts: all
   roles:
-    - common-schema
+    - oefenweb.common-schema
 ```
 
 #### License
