@@ -50,10 +50,12 @@
         - name: remove
           ansible.builtin.shell: >
             mysql -e 'DROP DATABASE IF EXISTS common_schema;'
+          changed_when: true
 
         - name: install
           ansible.builtin.shell: >
             mysql < /var/lib/ansible/common-schema/downloads/common_schema-{{ common_schema_version }}.sql
+          changed_when: true
 
     - name: create (local facts) directory
       ansible.builtin.file:
