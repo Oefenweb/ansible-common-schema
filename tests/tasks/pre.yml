@@ -10,9 +10,15 @@
 
 - name: percona server | add repo
   ansible.builtin.apt:
-    deb: "https://repo.percona.com/apt/percona-release_latest.{{ ansible_facts['distribution_release'] }}_all.deb"
+    deb: "https://repo.percona.com/apt/percona-release_latest.generic_all.deb"
 
-- name: percona server | add repo
+- name: percona server | configure repo
+  ansible.builtin.shell: >
+    percona-release {{ item }}
+  with_items:
+    - enable-only ps-57 release
+
+- name: percona server | update repo
   ansible.builtin.apt:
     update_cache: true
 
