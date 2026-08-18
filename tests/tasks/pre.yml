@@ -10,7 +10,7 @@
 
 - name: percona server | add repo
   ansible.builtin.apt:
-    deb: "https://repo.percona.com/apt/percona-release_latest.{{ ansible_distribution_release }}_all.deb"
+    deb: "https://repo.percona.com/apt/percona-release_latest.{{ ansible_facts['distribution_release'] }}_all.deb"
 
 - name: percona server | add repo
   ansible.builtin.apt:
@@ -39,7 +39,7 @@
       - percona-server-client-5.7
       - percona-server-server-5.7
       - libperconaserverclient20
-      - "python{{ ansible_python_version is version('3', '>=') | ternary('3', '') }}-mysqldb"
+      - "python{{ ansible_facts['python_version'] is version('3', '>=') | ternary('3', '') }}-mysqldb"
     state: "{{ apt_install_state | default('latest') }}"
 
 - name: percona server | configure encoding
@@ -67,4 +67,4 @@
       password = '{{ common_schema_percona_server_root_password }}'
     owner: root
     group: root
-    mode: 0600
+    mode: '0600'
