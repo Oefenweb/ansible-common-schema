@@ -1,6 +1,7 @@
 # test file
 ---
-- hosts: localhost
+- name: converge
+  hosts: localhost
   connection: local
   become: true
   pre_tasks:
@@ -11,4 +12,5 @@
   roles:
     - ../../
   handlers:
-    - ansible.builtin.import_tasks: "{{ playbook_dir }}/handlers/main.yml"
+    - name: include handlers
+      ansible.builtin.import_tasks: "{{ playbook_dir }}/handlers/main.yml"
